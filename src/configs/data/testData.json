@@ -1,0 +1,71 @@
+{
+    "schemes" : {
+        "Family with low total income" : {
+            "yearOfBirth": "1990",
+            "recentAssessableIncome": "Between $34,001 and $100,000",
+            "housingType": "1-room flat",
+            "propertyOwnership": "Owned by me or household member",
+            "ownMoreThanOneProperty": "No",
+            "member_1" : {
+                "yearOfBirth": "2000",
+                "recentAssessableIncome": "$34,000 and below or No income"
+            },
+            "expectedResult": {
+                "type": "low_benefits",
+                "individualBenefits": "35 years old (in 2025), Assessable Income between $34,001 and $100,000"
+            }
+        },
+
+        "Family having elderly person" : {
+            "yearOfBirth": "1990",
+            "recentAssessableIncome": "Above $100,000",
+            "housingType": "2-room flat",
+            "propertyOwnership": "Rented from Open market",
+            "ownMoreThanOneProperty": "No",
+            "member_1" : {
+                "yearOfBirth": "1960",
+                "recentAssessableIncome": "$34,000 and below or No income",
+                "cpfMediSaveBalance": "Less than $37,750"
+            },
+            "expectedResult": {
+                "type": "support_benefits",
+                "individualBenefits": "35 years old (in 2025), Assessable Income above $100,000"
+            }
+        },
+
+        "Family having many childrens" : {
+            "yearOfBirth": "1985",
+            "recentAssessableIncome": "Above $100,000",
+            "housingType": "Executive/Multi-Generation flat",
+            "propertyOwnership": "Rented from HDB",
+            "ownMoreThanOneProperty": "Yes",
+            "member_1" : {
+                "yearOfBirth": "2010"
+            },
+            "member_2" : {
+                "yearOfBirth": "2020",
+                "isThirdOrSubsequentChild": "Yes"
+            },
+            "member_3" : {
+                "yearOfBirth": "2022",
+                "isThirdOrSubsequentChild": "No"
+            },
+            "expectedResult": {
+                "type": "minimal_benefits",
+                "individualBenefits": "40 years old (in 2025), Assessable Income above $100,000"
+            }
+        },
+        
+        "Financial plan for Young people" : {
+            "yearOfBirth": "1995",
+            "recentAssessableIncome": "Above $100,000",
+            "housingType": "3-room flat",
+            "propertyOwnership": "Owned by me or household member",
+            "ownMoreThanOneProperty": "No",
+            "expectedResult": {
+                "type": "limited_benefits",
+                "individualBenefits": "30 years old (in 2025), Assessable Income above $100,000"
+            }
+        }
+    }
+}

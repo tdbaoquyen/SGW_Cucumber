@@ -1,0 +1,25 @@
+{
+    "BASE_URL" : "https://supportgowhere.life.gov.sg/",
+    "WAIT_TIMEOUT" : 10000,
+    "SHORT_WAIT_TIMEOUT" : 3000,
+    "SCROLL_VERICAL_HALF" : 400,
+    "SCROLL_VERICAL_FULL" : 800,
+    "SCROLL_HORIZONTAL_HALF" : 400,
+    "SCROLL_HORIZONTAL_FULL" : 1000,
+
+    "ERROR" : {
+        "REQUIRED_FIELD" : "This is a required field."
+
+    },
+    "TITLE" : {
+        "FEATURES_TITLE" : "Featured resources", 
+        "SUPPORT_CALCULATOR_TITLE" : "Support For You Calculator",
+        "CARE_SERVICES_TITLE" : "Care Services Recommender",
+        "SUPPORT_RECOMMENDER_TITLE" : "Support Recommender",
+        "ESTIMATED_BENEFITS_TITLE" : "Estimated benefits you and your household may receive",
+        "ESTIMATED_DEFAULT_CONTENT" : "Total estimated benefits for you and your household"
+    },
+    "MESSAGE" : {
+        "YOUR_INDIVIDUAL_BENEFITS" : "{XX} years old, Assessable Income {InComeOption}, {CPF MediSave balance moreThan37750}"
+    }
+}
