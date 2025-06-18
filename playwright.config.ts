@@ -3,7 +3,7 @@ import { defineConfig } from '@playwright/test';
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: './tests',
+  // testDir: './tests',
   timeout: 180000,
   expect: {
     timeout: 2 * 1000,
@@ -14,7 +14,7 @@ export default defineConfig({
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
+  retries: process.env.CI ? 0 : 0,
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
 
@@ -28,7 +28,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     baseURL: 'https://supportgowhere.life.gov.sg',
-    headless: process.env.CI ? true : false, // run headless mode on CI
+    headless: process.env.CI ? true : true, // run headless mode on CI
     viewport: { width: 1280, height: 720},
     screenshot: "only-on-failure",
     video: "retain-on-failure",

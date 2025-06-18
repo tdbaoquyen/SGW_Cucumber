@@ -10,12 +10,11 @@ export const SupportSelectors = {
     // sub feature card
     INFO_TITLE: (label:string) => `//div[contains(@class,"HeaderWrapper")]//span[normalize-space()="${label}"]`,
     FIELDSET_LABEL: (label:string) => `//fieldset[contains(@class,"Fieldset")]//label[contains(@class,"Label") and normalize-space()="${label}"]`,
-    FIELDSET: (label:string) => `${SupportSelectors.FIELDSET_LABEL(label)}/ancestor::fieldset[contains(@class,"Fieldset")]`,
-    FIELDSET_SELECT: (label:string) => `${SupportSelectors.FIELDSET(label)}//div[contains(@class,"StyledDropdow")]`,
-    FIELDSET_DROPDOWN: (label:string) => `${SupportSelectors.FIELDSET_SELECT(label)}//div[@role="listbox"]`,
-    FIELDSET_OPTION: (label:string, option:string) => `${SupportSelectors.FIELDSET(label)}//div[@role="listbox"]//div[@role="option"]//div[text()="${option}"]`,
-    FILEDSET_OPTION_DISPLAYED: (label:string) => `${SupportSelectors.FIELDSET_SELECT(label)}//div[contains(@class,"single-value")]`,
-    FIELDSET_ERROR: (label:string) => `${SupportSelectors.FIELDSET(label)}//span[normalize-space()="${common.ERROR.REQUIRED_FIELD}"]/ancestor::div[contains(@class,"TextWrapper")]`,
+    FIELDSET_SELECT: (label:string) => `//label[contains(@class,"Label") and normalize-space()="${label}"]/ancestor::fieldset[contains(@class,"Fieldset")]//div[contains(@class,"StyledDropdow")]`,
+    FIELDSET_DROPDOWN: (label:string) => `//label[contains(@class,"Label") and normalize-space()="${label}"]/ancestor::fieldset[contains(@class,"Fieldset")]//div[@role="listbox"]`,
+    FIELDSET_OPTION: (label:string) => `//label[contains(@class,"Label") and normalize-space()="${label}"]/ancestor::fieldset[contains(@class,"Fieldset")]//div[@role="listbox"]//div[@role="option"]//div[contains(@class,"react-select__option")]`,
+    FILEDSET_OPTION_DISPLAYED: (label:string) => `//label[contains(@class,"Label") and normalize-space()="${label}"]/ancestor::fieldset[contains(@class,"Fieldset")]//div[contains(@class,"react-select__value-container")]//div[1]`,
+    FIELDSET_ERROR: (label:string) => `//label[contains(@class,"Label") and normalize-space()="${label}"]/ancestor::fieldset[contains(@class,"Fieldset")]//span[normalize-space()="${common.ERROR.REQUIRED_FIELD}"]`,
 
     // buttons
     ADD_MEMBER: `//div[contains(@style,"box-sizing")]//span[normalize-space()="${commonText.BUTTON_ADD_MEMBER}"]/ancestor::button`,

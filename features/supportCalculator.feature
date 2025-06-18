@@ -6,7 +6,6 @@ Feature: Support For You Calculator
 
 Background:
     Given I navigate to the homepage
-    And the  Support For You Calculator card should be visible
 
 Scenario: Validation errors for invalid inputs
     Given I am on the Support For You Calculator feature

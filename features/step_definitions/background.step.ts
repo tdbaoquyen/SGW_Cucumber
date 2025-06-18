@@ -9,20 +9,16 @@ import { HomePage } from "../../src/helper/pageSelectors/homePage";
 const commonActions = new CommonActions();
 
 Given ( 'I navigate to the homepage', async () => {
-    await page.reload();
+    await page.waitForTimeout(common.SHORT_WAIT_TIMEOUT);
     await commonActions.isDisplayed(HomePage.LOGO_HOMEPAGE);
     await commonActions.isDisplayed(HomePage.READ_IN_LANGUAGE(commonText.LANG_ENGLISH));
-    const classEle = await page.getAttribute(HomePage.READ_IN_LANGUAGE(commonText.LANG_ENGLISH), "class");
     assert.equal(
-        classEle?.includes("selected"), 
-        true,
-        `FAIL REASON: Read this in '${commonText.LANG_ENGLISH}' is not choosed!!`
+        await page.isEnabled(HomePage.READ_IN_LANGUAGE(commonText.LANG_ENGLISH)),
+        false,
+        `FAIL REASON: Read this in: '${commonText.LANG_ENGLISH}' is not choosed!!`
     );
-});
-
-Then ( 'the  Support For You Calculator card should be visible', async () => {
     await commonActions.isDisplayed(HomePage.FEATURED_RESOURCES_TITLE);
     await commonActions.isDisplayed(HomePage.FEATURED_CARD_TITLE(common.TITLE.SUPPORT_CALCULATOR_TITLE));
     await commonActions.isDisplayed(HomePage.FEATURED_CARD_TITLE(common.TITLE.CARE_SERVICES_TITLE));
     await commonActions.isDisplayed(HomePage.FEATURED_CARD_TITLE(common.TITLE.SUPPORT_RECOMMENDER_TITLE));
-});
+})

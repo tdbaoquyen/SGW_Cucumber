@@ -10,7 +10,8 @@ export enum commonText {
     BUTTON_START = "Start",
     BUTTON_BACK = "Back",
     BUTTON_REMOVE = "Remove",
-    MEMBER_TAG = "Member"
+    MEMBER_TAG = "Member",
+    DEFAUL_OPTION = "Select"
 }
 
 export enum ListInfoFields {
