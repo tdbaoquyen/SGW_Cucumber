@@ -45,6 +45,7 @@ pipeline {
                 subject: 'Jenkins build result', 
                 to: 'td.baoquyen@gmail.com'
             )
+        }
         //     script {
         //         // Kiểm tra xem thư mục báo cáo có tồn tại không trước khi xuất bản
         //         // Playwright có thể không tạo báo cáo HTML nếu chỉ chạy thông qua Cucumber
@@ -128,4 +129,5 @@ pipeline {
         //     }
         // }
     }
+    
 }
