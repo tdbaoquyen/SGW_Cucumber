@@ -38,8 +38,7 @@ pipeline {
         stage('Run Tests...') {
             steps {
                 powershell '''
-                    Write-Host "Running tests..."
-                    npx cucumber-js test
+                    npx cucumber-js
                 '''
             }      
         }

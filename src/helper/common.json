@@ -19,7 +19,7 @@
         "ESTIMATED_BENEFITS_TITLE" : "Estimated benefits you and your household may receive",
         "ESTIMATED_DEFAULT_CONTENT" : "Total estimated benefits for you and your household"
     },
-    "MESSAGE" : {
-        "YOUR_INDIVIDUAL_BENEFITS" : "{XX} years old, Assessable Income {InComeOption}, {CPF MediSave balance moreThan37750}"
+    "LABEL" : {
+        "YOUR_INDIVIDUAL_BENEFITS" : "Your individual benefits"
     }
 }

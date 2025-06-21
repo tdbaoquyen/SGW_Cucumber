@@ -7,5 +7,5 @@ export const BenefitsSelectors = {
     BENEFITS_OPTION_LABEL : (label:string) => `//div[contains(@class,"SchemesPayoutContainer")]//span[text()="${label}"]/ancestor::div[contains(@class,"BCTextLinkWrapper")]`,
     BENEFITS_OPTION: (label:string) => `${BenefitsSelectors.BENEFITS_OPTION_LABEL(label)}/ancestor::div[contains(@class,"SchemeContentWrapper")]`,
     BENEFITS_OPTION_SUBTITLE : (label:string, text:string) => `${BenefitsSelectors.BENEFITS_OPTION(label)}//span[text()="${text}"]`,
-    BENEFITS_INDIVIDUAL_SUMMARY : `//div[@data-testid="wrapper-container"]//div[contains(@class,"ProfileWrapper")]//span[text()="${common.MESSAGE.YOUR_INDIVIDUAL_BENEFITS}"]`,
+    BENEFITS_INDIVIDUAL_SUMMARY : (label:string) => `//div[@data-testid="wrapper-container"]//span[normalize-space()="${label}"]/parent::div//div[contains(@class,"ProfileDescWrapper")]//span`,
 }

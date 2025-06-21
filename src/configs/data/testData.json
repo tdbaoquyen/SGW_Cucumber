@@ -7,11 +7,13 @@
             "propertyOwnership": "Owned by me or household member",
             "ownMoreThanOneProperty": "No",
             "member_1" : {
+                "member" : "member 1",
                 "yearOfBirth": "2000",
                 "recentAssessableIncome": "$34,000 and below or No income"
             },
             "expectedResult": {
                 "type": "low_benefits",
+                "schemes": "Family with low total income",
                 "individualBenefits": "35 years old (in 2025), Assessable Income between $34,001 and $100,000"
             }
         },
@@ -23,12 +25,14 @@
             "propertyOwnership": "Rented from Open market",
             "ownMoreThanOneProperty": "No",
             "member_1" : {
+                "member" : "member 1",
                 "yearOfBirth": "1960",
                 "recentAssessableIncome": "$34,000 and below or No income",
                 "cpfMediSaveBalance": "Less than $37,750"
             },
             "expectedResult": {
                 "type": "support_benefits",
+                "schemes": "Family having elderly person",
                 "individualBenefits": "35 years old (in 2025), Assessable Income above $100,000"
             }
         },
@@ -40,18 +44,22 @@
             "propertyOwnership": "Rented from HDB",
             "ownMoreThanOneProperty": "Yes",
             "member_1" : {
+                "member" : "member 1",
                 "yearOfBirth": "2010"
             },
             "member_2" : {
+                "member" : "member 2",
                 "yearOfBirth": "2020",
                 "isThirdOrSubsequentChild": "Yes"
             },
             "member_3" : {
+                "member" : "member 3",
                 "yearOfBirth": "2022",
                 "isThirdOrSubsequentChild": "No"
             },
             "expectedResult": {
                 "type": "minimal_benefits",
+                "schemes": "Family having many childrens",
                 "individualBenefits": "40 years old (in 2025), Assessable Income above $100,000"
             }
         },
@@ -64,6 +72,7 @@
             "ownMoreThanOneProperty": "No",
             "expectedResult": {
                 "type": "limited_benefits",
+                "schemes": "Financial plan for Young people",
                 "individualBenefits": "30 years old (in 2025), Assessable Income above $100,000"
             }
         }

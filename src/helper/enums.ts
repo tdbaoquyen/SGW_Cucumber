@@ -21,7 +21,7 @@ export enum ListInfoFields {
     HousingType = "Housing type",
     PropertyOwnership = "Property ownership",
     MoreThan1Property = "Do you own more than 1 property?",
-    SUBSEQUENT_CHILD = "Is this your third or subsequent child?"
+    SubsequentChild = "Is this your third or subsequent child?"
 }
 
 export enum ListSupportOptions {

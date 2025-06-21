@@ -14,7 +14,7 @@ BeforeAll (async function () {
 
 Before (async function (scenario) {
     page = await browser.newPage({
-        viewport: { width: 1280 , height : 720},
+        viewport: { width: 1820 , height : 900},
         recordVideo: {
             dir: `./reports/videos/` + scenario.pickle.name
         }
@@ -31,10 +31,10 @@ After (async function (scenario) {
         });
         await this.attach(image, 'image/png')
     }
+    // await page.close();
 });
 
 AfterAll (async function () {
-    await page.close();
     await browser.close();
 });
 

@@ -4,10 +4,7 @@ import { defineConfig } from '@playwright/test';
  */
 export default defineConfig({
   // testDir: './tests',
-  timeout: 180000,
-  expect: {
-    timeout: 2 * 1000,
-  },
+  timeout: 30000, // Increase global timeout to 30 seconds
 
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -27,12 +24,15 @@ export default defineConfig({
 
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
+    actionTimeout: 10000, // Increase action timeout to 10 seconds
+    navigationTimeout: 20000, // Increase navigation timeout to 20 seconds
     baseURL: 'https://supportgowhere.life.gov.sg',
     headless: process.env.CI ? true : true, // run headless mode on CI
     viewport: { width: 1280, height: 720},
     screenshot: "only-on-failure",
     video: "retain-on-failure",
     trace: 'on-first-retry',
+    // a
   },
 
   /* Configure projects for major browsers */

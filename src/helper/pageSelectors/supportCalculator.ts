@@ -10,10 +10,12 @@ export const SupportSelectors = {
     // sub feature card
     INFO_TITLE: (label:string) => `//div[contains(@class,"HeaderWrapper")]//span[normalize-space()="${label}"]`,
     FIELDSET_LABEL: (label:string) => `//fieldset[contains(@class,"Fieldset")]//label[contains(@class,"Label") and normalize-space()="${label}"]`,
-    FIELDSET_SELECT: (label:string) => `//label[contains(@class,"Label") and normalize-space()="${label}"]/ancestor::fieldset[contains(@class,"Fieldset")]//div[contains(@class,"StyledDropdow")]`,
-    FIELDSET_DROPDOWN: (label:string) => `//label[contains(@class,"Label") and normalize-space()="${label}"]/ancestor::fieldset[contains(@class,"Fieldset")]//div[@role="listbox"]`,
-    FIELDSET_OPTION: (label:string) => `//label[contains(@class,"Label") and normalize-space()="${label}"]/ancestor::fieldset[contains(@class,"Fieldset")]//div[@role="listbox"]//div[@role="option"]//div[contains(@class,"react-select__option")]`,
-    FILEDSET_OPTION_DISPLAYED: (label:string) => `//label[contains(@class,"Label") and normalize-space()="${label}"]/ancestor::fieldset[contains(@class,"Fieldset")]//div[contains(@class,"react-select__value-container")]//div[1]`,
+    FIELDSET_SELECT: (label:string) => `//label[contains(@class,"Label") and text()="${label}"]/ancestor::fieldset[contains(@class,"Fieldset")]//div[contains(@class,"ChildrenWrapper")]`,
+    FIELDSET_INPUT: (label:string) => `//label[contains(@class,"Label") and normalize-space()="${label}"]/ancestor::fieldset[contains(@class,"Fieldset")]//div[contains(@class,"react-select__placeholder")]`,
+    FIELDSET_LISTBOX : (label : string ) => `//label[contains(@class,"Label") and text()="${label}"]/ancestor::fieldset[contains(@class,"Fieldset")]//div[@role="listbox"]`,
+    FIELDSET_OPTION: (label:string, value:string) => `//label[contains(@class,"Label") and normalize-space()="${label}"]/ancestor::fieldset[contains(@class,"Fieldset")]//div[@role="listbox"]//div[@role="option" and text()="${value}"]`,
+    FILEDSET_CHOICE: (label:string, value:string) => `//label[contains(@class,"Label") and normalize-space()="${label}"]/ancestor::fieldset[contains(@class,"Fieldset")]//input[@type="radio" and @value="${value}"]`,
+    FILEDSET_DEFAULT: (label:string) => `//label[contains(@class,"Label") and normalize-space()="${label}"]/ancestor::fieldset[contains(@class,"Fieldset")]//div[contains(@class,"react-select__value-container")]//div[1]`,
     FIELDSET_ERROR: (label:string) => `//label[contains(@class,"Label") and normalize-space()="${label}"]/ancestor::fieldset[contains(@class,"Fieldset")]//span[normalize-space()="${common.ERROR.REQUIRED_FIELD}"]`,
 
     // buttons
@@ -22,5 +24,6 @@ export const SupportSelectors = {
     REMOVE_BUTTON: `//div[contains(@class, "ElementSpacedWrapper")]//span[text() = "${commonText.BUTTON_REMOVE}"]/ancestor::button`,
 
     // add household member
-    MEMBER_X: (X: string) => `//div[contains(@class, "ElementSpacedWrapper")]//span[normalize-space() = "${commonText.MEMBER_TAG} {X}"]`
+    MEMBER_FIELD_SELECT : (member: string, label:string) => `//span[normalize-space() = "${member}"]/following::label[contains(@id,"member") and text()="${label}"]/following::div[contains(@class,"StyledDropdown")]//input`,
+    MEMBER_FIELD_OPTION : (member: string, label:string, value:string) => `//span[normalize-space() = "${member}"]/following::label[contains(@id,"member") and text()="${label}"]/following::div[contains(@class,"SelectWrapper")]//div[@role="listbox"]//div[@role="option" and text()="${value}"]`
 }

@@ -9,6 +9,7 @@ import { HomePage } from "../../src/helper/pageSelectors/homePage";
 const commonActions = new CommonActions();
 
 Given ( 'I navigate to the homepage', async () => {
+    await page.goto(common.BASE_URL);
     await page.waitForTimeout(common.SHORT_WAIT_TIMEOUT);
     await commonActions.isDisplayed(HomePage.LOGO_HOMEPAGE);
     await commonActions.isDisplayed(HomePage.READ_IN_LANGUAGE(commonText.LANG_ENGLISH));

@@ -13,11 +13,15 @@ module.exports = {
         format: [
             'progress-bar',
             'html:test-results/cucumber-report.html',
-            'json:test-results/cucumber-report.json'
+            'json:test-results/cucumber-report.json',
+            '@cucumber/pretty-formatter',
         ],
         requireModule: [
             'ts-node/register'
         ],
-        parallel: 1
+        parallel: 1,
+        retry: 0,
+        efaultNavigationTimeout: 60000,
+        timeout: 10000, // Increase to 10 seconds per step
     }
 };
