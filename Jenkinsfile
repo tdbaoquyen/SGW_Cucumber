@@ -22,18 +22,48 @@ pipeline {
                 checkout scm // Checkout code from repository
             }
         }
+        // stage('Install Dependencies...') {
+        //     steps {
+        //         bat '''
+        //             npm install
+        //             npx playwright install --with-deps chromium
+        //             npm install --save-dev @cucumber/cucumber
+        //             echo "📦 Node.js version:"
+        //             node -v
+        //             echo "📦 NPM version:"
+        //             npm -v
+        //             echo "📦 Cucumber version:"
+        //             npx cucumber-js --version
+        //         '''
+        //     }
+        // }
         stage('Install Dependencies...') {
             steps {
                 bat '''
                     npm install
-                    npx playwright install --with-deps chromium
                     npm install --save-dev @cucumber/cucumber
                     echo "📦 Node.js version:"
                     node -v
                     echo "📦 NPM version:"
                     npm -v
-                    echo "📦 Cucumber version:"
-                    npx cucumber-js --version
+                '''
+            }
+        }
+        
+        stage('Install Playwright Browsers...') {
+            steps {
+                bat '''
+                    echo "Setting up Playwright browsers path..."
+                    if not exist "%PLAYWRIGHT_BROWSERS_PATH%" mkdir "%PLAYWRIGHT_BROWSERS_PATH%"
+                    
+                    echo "Installing Playwright browsers..."
+                    npx playwright install chromium
+                    
+                    echo "Verifying installation..."
+                    npx playwright install-deps
+                    
+                    echo "Listing browser directory..."
+                    dir "%PLAYWRIGHT_BROWSERS_PATH%" /s
                 '''
             }
         }

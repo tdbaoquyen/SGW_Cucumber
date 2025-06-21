@@ -6,9 +6,15 @@ let browser : Browser;
 let page : Page;
 
 BeforeAll (async function () {
+    // browser = await chromium.launch({
+    //     headless : true,
+    //     slowMo : 1000
+    // });
+
+        // Khởi tạo browser với options phù hợp
     browser = await chromium.launch({
-        headless : true,
-        slowMo : 1000
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
 });
 
