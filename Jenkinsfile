@@ -39,7 +39,8 @@ pipeline {
         }
         stage('Run Tests...') {
             steps {
-                powershell '''
+                bat '''
+                    echo "Running Cucumber tests..."
                     npx cucumber-js
                 '''
             }      
