@@ -4,6 +4,8 @@ pipeline {
 
     environment {
         NODE_VERSION = 'NodeJS_22'
+                // Đặt biến môi trường cho Playwright
+        PLAYWRIGHT_BROWSERS_PATH = "${WORKSPACE}\\browsers"
     }
 
     // Trigger configuration for GitHub webhooks
