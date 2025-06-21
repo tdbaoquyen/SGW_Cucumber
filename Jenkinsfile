@@ -7,7 +7,7 @@ pipeline {
                 // Đặt biến môi trường cho Playwright
         PLAYWRIGHT_BROWSERS_PATH = "${WORKSPACE}\\browsers"
     }
-
+//a
     // Trigger configuration for GitHub webhooks
     triggers {
         githubPush()
