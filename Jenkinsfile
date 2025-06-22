@@ -1,10 +1,10 @@
 // Jenkinsfile
 pipeline {
-    agent any // Hoặc chỉ định một label cho một agent cụ thể: agent { label 'your-node-agent' }
+    agent any // or setup directly agent: agent { label 'your-node-agent' }
 
     environment {
         NODE_VERSION = 'NodeJS_22'
-                // Đặt biến môi trường cho Playwright
+        // variable for Playwright path
         PLAYWRIGHT_BROWSERS_PATH = "${WORKSPACE}\\browsers"
     }
 //a
@@ -22,21 +22,7 @@ pipeline {
                 checkout scm // Checkout code from repository
             }
         }
-        // stage('Install Dependencies...') {
-        //     steps {
-        //         bat '''
-        //             npm install
-        //             npx playwright install --with-deps chromium
-        //             npm install --save-dev @cucumber/cucumber
-        //             echo "📦 Node.js version:"
-        //             node -v
-        //             echo "📦 NPM version:"
-        //             npm -v
-        //             echo "📦 Cucumber version:"
-        //             npx cucumber-js --version
-        //         '''
-        //     }
-        // }
+
         stage('Install Dependencies...') {
             steps {
                 bat '''
@@ -67,10 +53,9 @@ pipeline {
                 '''
             }
         }
-        stage('Run Tests...') {
+        stage('Running Cucumber tests...') {
             steps {
                 bat '''
-                    echo "Running Cucumber tests..."
                     npx cucumber-js
                 '''
             }      

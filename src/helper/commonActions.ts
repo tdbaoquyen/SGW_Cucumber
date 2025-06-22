@@ -2,18 +2,11 @@ import assert from "assert";
 import { page } from "../configs/hooks";
 import * as common from "../../src/helper/common.json";
 import { SupportSelectors } from "./pageSelectors/supportCalculator";
-import { ListInfoFields } from "./enums";
+import { commonText, ListInfoFields, EstimatedYear } from "./enums";
 import { BenefitsSelectors } from "./pageSelectors/estimatedBenefits";
 import { LowIncome, ElderHouseHold, ManyChildren, YoungHouseHold } from "../configs/data/data";
-import * as testData from "../configs/data/testData.json";
-
-// const lowIncome = testData.schemes["Family with low total income"];
-// const elderHouseHold = testData.schemes["Family having elderly person"];
-// const manyChildren = testData.schemes["Family having many childrens"];
-// const youngHouseHold = testData.schemes["Financial plan for Young people"];
 
 export class CommonActions {
-    // constructor(private page: Page = page) {}
 
     public async getElement(location:string){
         await page.waitForSelector(location),
@@ -52,33 +45,30 @@ export class CommonActions {
             true,
         )
         await page.fill(location, value);
-        await page.waitForTimeout(common.SHORT_WAIT_TIMEOUT);
     };
 
     public async selectValue(label:string, option:string): Promise<void> {
-        await page.hover(SupportSelectors.FIELDSET_SELECT(label));
+        await page.hover(SupportSelectors.FIELDSET_SELECT(label), {timeout: common.SHORT_WAIT_TIMEOUT});
         await page.fill(`${SupportSelectors.FIELDSET_SELECT(label)}//input`, option);
+        console.log('Selector (option):', SupportSelectors.FIELDSET_OPTION(label, option));
+
         assert.equal(
             await page.isVisible(SupportSelectors.FIELDSET_OPTION(label, option)),
             true,
         )
+        console.log(` ===== SUCCESS: Fill value for '${label}' field!!`)
         await page.click(SupportSelectors.FIELDSET_OPTION(label, option));
-        await page.waitForTimeout(3000);
-        console.log(` ===== SUCCESS: Selected value '${option}' in ${label} field`);
+        console.log(` ===== SUCCESS: Selected value '${option}' in '${label}' field`);
     };
 
-    public async selectMemberValue(member: string, label:string, option:string) : Promise<void> {
-        await page.fill(SupportSelectors.MEMBER_FIELD_SELECT(member, label), option);
-        assert.equal(
-            await page.isVisible(SupportSelectors.MEMBER_FIELD_OPTION(member, label, option)),
-            true,
-        )
-        await page.click(SupportSelectors.MEMBER_FIELD_OPTION(member, label, option));
-        await page.waitForTimeout(1000);
-    };
-
-    public async selectYesNo(label: string, choice:string) : Promise<void> {
-        await page.click(SupportSelectors.FILEDSET_CHOICE(label, choice), { timeout : common.SHORT_WAIT_TIMEOUT});
+    public async selectYesNo(label: string, choice: string) : Promise<void> {
+        const radioButton = await page.locator(SupportSelectors.FILEDSET_CHOICE(label, choice));
+        if (await radioButton.isVisible() && await radioButton.isEnabled()) {
+            await radioButton.click();
+            console.log(`✅ Clicked "${choice}" for question "${label}"`);
+        } else {
+            throw new Error(`❌ Radio button "${choice}" for question "${label}" is not clickable`);
+        }
     };
 
     public async selectChoice(label: string, choice:string) : Promise<void> {
@@ -89,6 +79,36 @@ export class CommonActions {
         )
         await page.click(SupportSelectors.FIELDSET_OPTION(label, choice));
         console.log(` ===== SUCCESS: Selected value '${choice}' in ${label} field`);
+    };
+
+    public async selectMemberValue(member: string, label:string, option:string) : Promise<void> {
+        await page.fill(`${SupportSelectors.MEMBER_FIELD_SELECT(member, label)}//input`, option);
+        assert.equal(
+            await page.isVisible(SupportSelectors.MEMBER_FIELD_OPTION(member, label, option)),
+            true,
+        )
+        console.log(` ===== SUCCESS: Fill value for '${label}' field of '${member}' member!!`)
+        await page.click(SupportSelectors.MEMBER_FIELD_OPTION(member, label, option));
+        await page.waitForTimeout(1000);
+    };
+    
+    public async selectMemberOption(member: string, label: string, choice:string) : Promise<void> {
+        await page.click(SupportSelectors.MEMBER_FIELD_SELECT(member, label));
+        assert.equal(
+            await page.isVisible(SupportSelectors.MEMBER_FIELD_OPTION(member, label, choice)),
+            true,
+        )
+        await page.click(SupportSelectors.MEMBER_FIELD_OPTION(member, label, choice));
+        console.log(` ===== SUCCESS: Selected value '${choice}' in '${label}' field of '${member}' member!!`);
+    };
+        
+    public async selectMemberChoice(member: string, label: string, choice:string) : Promise<void> {
+        assert.equal(
+            await page.isVisible(SupportSelectors.MEMBER_FIELD_CHOICE(member, label, choice)),
+            true,
+        )
+        await page.click(SupportSelectors.MEMBER_FIELD_CHOICE(member, label, choice));
+        console.log(` ===== SUCCESS: Selected value '${choice}' in '${label}' field of '${member}' member!!`);
     };
 
     public async isDisplayed(location:string){
@@ -111,115 +131,85 @@ export class CommonActions {
     };
 
     public async enterFamilyWithLowTotalIncome() {
-        const YOB = LowIncome.yearOfBirth;
-        const income = LowIncome.recentAssessableIncome;
-        const houseType = LowIncome.housingType;
-        const property =  LowIncome.propertyOwnership;
-        const moreThan1Property = LowIncome.ownMoreThanOneProperty;
-        const member = LowIncome.member;
-        const subYOB = LowIncome.mem_yearOfBirth;
-        const subIncome = LowIncome.mem_recentAssessableIncome;
-
         console.log(`===== START: Enter data for: Family with low total income`);
-        // add main household
-        await this.selectValue(ListInfoFields.YearOfBirth, YOB);
-        await this.selectChoice(ListInfoFields.AssessableIncome, income);
-        await this.selectChoice(ListInfoFields.HousingType, houseType);
-        await this.selectChoice(ListInfoFields.PropertyOwnership, property);
-        await this.selectYesNo(ListInfoFields.MoreThan1Property, moreThan1Property);
-        // add member
+        await this.selectValue(ListInfoFields.YearOfBirth, LowIncome.yearOfBirth);
+        await this.selectChoice(ListInfoFields.AssessableIncome, LowIncome.recentAssessableIncome);
+        await this.selectChoice(ListInfoFields.HousingType, LowIncome.housingType);
+        await this.selectChoice(ListInfoFields.PropertyOwnership, LowIncome.propertyOwnership);
+        await this.selectYesNo(ListInfoFields.MoreThan1Property, LowIncome.ownMoreThanOneProperty);
+    
+        await page.hover(SupportSelectors.ADD_MEMBER);
         await page.click(SupportSelectors.ADD_MEMBER);
-        await this.selectMemberValue(member, ListInfoFields.YearOfBirth, subYOB);
-        await this.selectMemberValue(member, ListInfoFields.AssessableIncome, subIncome);
+        await this.selectMemberValue(LowIncome.member, ListInfoFields.YearOfBirth, LowIncome.mem_yearOfBirth);
+        await this.selectMemberOption(LowIncome.member, ListInfoFields.AssessableIncome, LowIncome.mem_recentAssessableIncome);
         console.log(`===== SUCCESS: Enter data for: Family with low total income`);
     };
 
     public async enterFamilyHavingElderlyPersonData() {
-        const YOB = ElderHouseHold.yearOfBirth;
-        const income = ElderHouseHold.recentAssessableIncome;
-        const houseType = ElderHouseHold.housingType;
-        const property = ElderHouseHold.propertyOwnership;
-        const moreThan1Property = ElderHouseHold.ownMoreThanOneProperty;
-        const member = ElderHouseHold.member;
-        const subYOB = ElderHouseHold.mem_yearOfBirth;
-        const subIncome = ElderHouseHold.mem_recentAssessableIncome;
-        const subCPF = ElderHouseHold.mem_cpfMediSaveBalance;
-
         console.log(`===== START: Enter data for: Family having elderly person`);
-        // add main household
-        await this.selectValue(ListInfoFields.YearOfBirth, YOB);
-        await this.selectValue(ListInfoFields.AssessableIncome, income);
-        await this.selectValue(ListInfoFields.HousingType, houseType);
-        await this.selectValue(ListInfoFields.PropertyOwnership, property);
-        await this.selectYesNo(ListInfoFields.MoreThan1Property, moreThan1Property);
-        // add member
+        await this.selectValue(ListInfoFields.YearOfBirth, ElderHouseHold.yearOfBirth);
+        await this.selectChoice(ListInfoFields.AssessableIncome, ElderHouseHold.recentAssessableIncome);
+        await this.selectChoice(ListInfoFields.HousingType, ElderHouseHold.housingType);
+        await this.selectChoice(ListInfoFields.PropertyOwnership, ElderHouseHold.propertyOwnership);
+        await this.selectYesNo(ListInfoFields.MoreThan1Property, ElderHouseHold.ownMoreThanOneProperty);
+    
+        await page.hover(SupportSelectors.ADD_MEMBER);
         await page.click(SupportSelectors.ADD_MEMBER);
-        await this.selectMemberValue(member, ListInfoFields.YearOfBirth, subYOB);
-        await this.selectMemberValue(member, ListInfoFields.AssessableIncome, subIncome);
-        await this.selectMemberValue(member, ListInfoFields.CPFBalance, subCPF);
+        await this.selectMemberValue(ElderHouseHold.member, ListInfoFields.YearOfBirth, ElderHouseHold.mem_yearOfBirth);
+        await this.selectMemberOption(ElderHouseHold.member, ListInfoFields.AssessableIncome, ElderHouseHold.mem_recentAssessableIncome);
+        await this.selectMemberChoice(ElderHouseHold.member, ListInfoFields.CPFBalance, ElderHouseHold.mem_cpfMediSaveBalance);
         console.log(`===== SUCCESS: Enter data for: Family having elderly person`);
     };
 
     public async enterFamilyHavingManyChildrensData() {
-        const YOB = ManyChildren.yearOfBirth;
-        const income = ManyChildren.recentAssessableIncome;
-        const houseType = ManyChildren.housingType;
-        const property = ManyChildren.propertyOwnership;
-        const moreThan1Property = ManyChildren.ownMoreThanOneProperty;
-        const member1 = ManyChildren.member_1;
-        const subYOB_1 = ManyChildren.mem_1_yearOfBirth;
-        const member2 = ManyChildren.member_2;
-        const subYOB_2 = ManyChildren.mem_2_yearOfBirth;
-        const subChild_2 = ManyChildren.mem_2_isThirdOrSubsequentChild;
-        const member3 = ManyChildren.member_3;
-        const subYOB_3 = ManyChildren.mem_3_yearOfBirth;
-        const subChild_3 = ManyChildren.mem_3_isThirdOrSubsequentChild;
-        
         console.log(`===== START: Enter data for: Family having many childrens`);
-        // add main household
-        await this.selectValue(ListInfoFields.YearOfBirth, YOB);
-        await this.selectValue(ListInfoFields.AssessableIncome, income);
-        await this.selectValue(ListInfoFields.HousingType, houseType);
-        await this.selectValue(ListInfoFields.PropertyOwnership, property);
-        await this.selectYesNo(ListInfoFields.MoreThan1Property, moreThan1Property);
+        await this.selectValue(ListInfoFields.YearOfBirth, ManyChildren.yearOfBirth);
+        await this.selectChoice(ListInfoFields.AssessableIncome, ManyChildren.recentAssessableIncome);
+        await this.selectChoice(ListInfoFields.HousingType, ManyChildren.housingType);
+        await this.selectChoice(ListInfoFields.PropertyOwnership, ManyChildren.propertyOwnership);
+        await this.selectYesNo(ListInfoFields.MoreThan1Property, ManyChildren.ownMoreThanOneProperty);
+    
+        await page.hover(SupportSelectors.ADD_MEMBER);
+        await page.click(SupportSelectors.ADD_MEMBER);
         // add child 1
-        await page.click(SupportSelectors.ADD_MEMBER);
-        await this.selectMemberValue(member1, ListInfoFields.YearOfBirth, subYOB_1);
+        await this.selectMemberValue(ManyChildren.member_1, ListInfoFields.YearOfBirth, ManyChildren.mem_1_yearOfBirth);
         // add child 2
+        await page.hover(SupportSelectors.ADD_MEMBER);
         await page.click(SupportSelectors.ADD_MEMBER);
-        await this.selectMemberValue(member2, ListInfoFields.YearOfBirth, subYOB_2);
-        await this.selectMemberValue(member2, ListInfoFields.SubsequentChild, subChild_2);
-        // add child 3
-        await page.click(SupportSelectors.ADD_MEMBER);
-        await this.selectMemberValue(member3, ListInfoFields.YearOfBirth, subYOB_3);
-        await this.selectMemberValue(member3, ListInfoFields.SubsequentChild, subChild_3);
+        await this.selectMemberValue(ManyChildren.member_2, ListInfoFields.YearOfBirth, ManyChildren.mem_2_yearOfBirth);
+        await this.selectMemberChoice(ManyChildren.member_2, ListInfoFields.IsSubsequentChild, ManyChildren.mem_2_isThirdOrSubsequentChild);
         console.log(`===== SUCCESS: Enter data for: Family having many childrens`);
     };
 
     public async enterFinancialPlanForYoungPeopleData() {
-        const YOB = YoungHouseHold.yearOfBirth;
-        const income = YoungHouseHold.recentAssessableIncome;
-        const houseType = YoungHouseHold.housingType;
-        const property = YoungHouseHold.propertyOwnership;
-        const moreThan1Property = YoungHouseHold.ownMoreThanOneProperty;
-        
         console.log(`===== START: Enter data for: Financial plan for Young people`);
-        // add main household
-        await this.selectValue(ListInfoFields.YearOfBirth, YOB);
-        await this.selectValue(ListInfoFields.AssessableIncome, income);
-        await this.selectValue(ListInfoFields.HousingType, houseType);
-        await this.selectValue(ListInfoFields.PropertyOwnership, property);
-        await this.selectYesNo(ListInfoFields.MoreThan1Property, moreThan1Property);
+        await this.selectValue(ListInfoFields.YearOfBirth, YoungHouseHold.yearOfBirth);
+        await this.selectChoice(ListInfoFields.AssessableIncome, YoungHouseHold.recentAssessableIncome);
+        await this.selectChoice(ListInfoFields.HousingType, YoungHouseHold.housingType);
+        await this.selectChoice(ListInfoFields.PropertyOwnership, YoungHouseHold.propertyOwnership);
+        await this.selectYesNo(ListInfoFields.MoreThan1Property, YoungHouseHold.ownMoreThanOneProperty);
         console.log(`===== SUCCESS: Enter data for: Financial plan for Young people`);
     };
 
-    public async verifyIndividualBenefits(expectedResult:string) {
-        const actualResult = await this.getText(BenefitsSelectors.BENEFITS_INDIVIDUAL_SUMMARY(common.LABEL.YOUR_INDIVIDUAL_BENEFITS));
-        assert.equal(
-            actualResult.trim(),
-            expectedResult.trim(),
-            `FAIL REASON: The 'Your individual benefits' expected ${expectedResult} but got ${actualResult}!!`
-        )
+    public async verifyIndividualBenefits(year:string) {
+        const yearStatus = await page.getAttribute(BenefitsSelectors.BENEFITS_YEAR(year), "aria-selected");
+        if(yearStatus === "true"){
+            assert.equal(
+                await page.isVisible(BenefitsSelectors.ESTIMATED_BENEFITS_PAGE_TITLE),
+                true,
+                `FAIL REASON: The '${common.TITLE.ESTIMATED_BENEFITS_PAGE_TITLE}' title is NOT displayed!!`
+            );
+            console.log(`===== SUCCESS: Showing the '${common.TITLE.ESTIMATED_BENEFITS_PAGE_TITLE}' title!!`);
+            assert.equal(
+                await page.isVisible(BenefitsSelectors.ESTIMATED_BENEFITS_DEFAULT_CONTENT(common.TITLE.ESTIMATED_DEFAULT_CONTENT)),
+                true,
+                `FAIL REASON: The '${common.TITLE.ESTIMATED_DEFAULT_CONTENT}' title is NOT displayed!!`
+            );
+            console.log(`===== SUCCESS: Showing the '${common.TITLE.ESTIMATED_BENEFITS_PAGE_TITLE}' title!!`);
+        }
+        else{
+            await page.click(BenefitsSelectors.BENEFITS_YEAR(year));
+        }
     };
     
-}
+}   

@@ -1,20 +1,15 @@
 import { Given, When, Then } from "@cucumber/cucumber";
 import { page } from "../../src/configs/hooks";
-import { commonText, ListInfoFields, ListSupportOptions } from "../../src/helper/enums";
+import { commonText, EstimatedYear, ListInfoFields } from "../../src/helper/enums";
 import * as common from "../../src/helper/common.json";
 import assert from "assert";
 import { CommonActions } from "../../src/helper/commonActions";
 import { HomePage } from "../../src/helper/pageSelectors/homePage";
 import { SupportSelectors } from "../../src/helper/pageSelectors/supportCalculator";
 import { BenefitsSelectors } from "../../src/helper/pageSelectors/estimatedBenefits";
-import { LowIncome } from "../../src/configs/data/data";
-import * as testData from "../../src/configs/data/testData.json";
+import { LowIncome, ElderHouseHold, ManyChildren, YoungHouseHold } from "../../src/configs/data/data";
 
 const commonActions = new CommonActions();
-// const lowIncome = testData.schemes["Family with low total income"];
-// const elderHouseHold = testData.schemes["Family having elderly person"];
-// const manyChildren = testData.schemes["Family having many childrens"];
-// const youngHouseHold = testData.schemes["Financial plan for Young people"];
 
 Given ( 'I am on the Support For You Calculator feature', async () => {
     await page.hover(HomePage.FEATURED_CARD(common.TITLE.SUPPORT_CALCULATOR_TITLE));
@@ -43,7 +38,6 @@ When ( 'I click the show estimated benefits button without any information', asy
 })
 
 Then ( 'the warning error is displayed in each required field', async () => {
-    let displayedOption : string;
     const listFields = [
         ListInfoFields.YearOfBirth,
         ListInfoFields.HousingType,
@@ -71,11 +65,11 @@ Then ( 'the warning error is displayed in each required field', async () => {
 
 Then ( 'the Show estimated Benefits page is not loaded', async () => {
     assert.equal(
-        await page.isVisible(BenefitsSelectors.ESTIMATED_BENEFITS_TITLE),
+        await page.isVisible(BenefitsSelectors.ESTIMATED_BENEFITS_PAGE_TITLE),
         false,
-        `FAIL REASON: The '${common.TITLE.ESTIMATED_BENEFITS_TITLE}' page is displayed!!`
+        `FAIL REASON: The '${common.TITLE.ESTIMATED_BENEFITS_PAGE_TITLE}' page is displayed!!`
     );
-    console.log(`===== SUCCESS: The ${common.TITLE.ESTIMATED_BENEFITS_TITLE} page is not loaded!`);
+    console.log(`===== SUCCESS: The ${common.TITLE.ESTIMATED_BENEFITS_PAGE_TITLE} page is not loaded!`);
     assert.equal(
         await page.isVisible(SupportSelectors.SUPPORT_CALCULATOR_TITLE),
         true,
@@ -94,27 +88,27 @@ Then ( 'I back to homepage', async () => {
     console.log(`===== SUCCESS: The ${common.TITLE.FEATURES_TITLE} title is not loaded!`);
 })
 
-// When ( 'I enter household information as {string}', async (scheme : string) => {
-//     await page.hover(SupportSelectors.START_BUTTON);
-//     await page.click(SupportSelectors.START_BUTTON);
+When ( 'I enter household information as {string}', async (scheme : string) => {
+    await page.hover(SupportSelectors.START_BUTTON);
+    await page.click(SupportSelectors.START_BUTTON);
 
-//     switch (scheme) {
-//         case lowIncome.expectedResult.schemes :
-//             await commonActions.enterFamilyWithLowTotalIncome();
-//             break;
-//         case elderHouseHold.expectedResult.schemes :
-//             await commonActions.enterFamilyHavingElderlyPersonData();
-//             break;
-//         case manyChildren.expectedResult.schemes :
-//             await commonActions.enterFamilyHavingManyChildrensData();
-//             break;
-//         case youngHouseHold.expectedResult.schemes :
-//             await commonActions.enterFinancialPlanForYoungPeopleData();
-//             break;
-//         default :
-//             throw new Error(`Unknown scheme: ${scheme}`);
-//     }
-// })
+    switch (scheme) {
+        case LowIncome.schemes :
+            await commonActions.enterFamilyWithLowTotalIncome();
+            break;
+        case ElderHouseHold.schemes :
+            await commonActions.enterFamilyHavingElderlyPersonData();
+            break;
+        case ManyChildren.schemes :
+            await commonActions.enterFamilyHavingManyChildrensData();
+            break;
+        case YoungHouseHold.schemes :
+            await commonActions.enterFinancialPlanForYoungPeopleData();
+            break;
+        default :
+            throw new Error(`Unknown scheme: ${scheme}`);
+    }
+})
 
 When ( 'I click the show estimated benefits button', async () => {
     await page.hover(SupportSelectors.SHOW_ESTIMATED_BENEFITS);
@@ -127,52 +121,36 @@ When ( 'I click the show estimated benefits button', async () => {
     console.log(`===== SUCCESS: Click the ${commonText.BUTTON_SHOW_BENEFITS} button`);
 });
 
-// Then ( 'I should see the {string}', async (expectedResult:string) => {
-//     await page.waitForSelector(BenefitsSelectors.BENEFITS_INDIVIDUAL_SUMMARY(
-//         common.LABEL.YOUR_INDIVIDUAL_BENEFITS), { timeout : common.WAIT_TIMEOUT});
-    
+// Then ( 'I should see the {string}', async (expectedResult:string) => {   
 //     switch (expectedResult) {
-//         case lowIncome.expectedResult.type :
-//             await commonActions.verifyIndividualBenefits(lowIncome.expectedResult.individualBenefits);
+//         case LowIncome.type :
+//             await commonActions.verifyIndividualBenefits(EstimatedYear.YEAR_2025);
 //             break;
-//         case elderHouseHold.expectedResult.type :
-//             await commonActions.verifyIndividualBenefits(elderHouseHold.expectedResult.individualBenefits);
+//         case ElderHouseHold.type :
+//             await commonActions.verifyIndividualBenefits(EstimatedYear.YEAR_2025);
 //             break;
-//         case manyChildren.expectedResult.type :
-//             await commonActions.verifyIndividualBenefits(manyChildren.expectedResult.individualBenefits);
+//         case ManyChildren.type :
+//             await commonActions.verifyIndividualBenefits(EstimatedYear.YEAR_2025);
 //             break;
-//         case youngHouseHold.expectedResult.type : 
-//             await commonActions.verifyIndividualBenefits(youngHouseHold.expectedResult.individualBenefits);
+//         case YoungHouseHold.type : 
+//             await commonActions.verifyIndividualBenefits(EstimatedYear.YEAR_2025);
 //             break;
 //         default :
 //             throw new Error(`Unknown expected result: ${expectedResult}`);
 //     }
-// })
+// });
 
-When ( 'I enter household information with valid values', async () => {
+When ( 'I enter household information with Low total income scheme', async () => {
     await page.hover(SupportSelectors.START_BUTTON);
     await page.click(SupportSelectors.START_BUTTON);
 
-    await commonActions.selectValue(ListInfoFields.YearOfBirth, LowIncome.yearOfBirth);
-    // await page.fill(`${SupportSelectors.FIELDSET_SELECT(ListInfoFields.YearOfBirth)}//input`, LowIncome.yearOfBirth);
-    // await page.click(SupportSelectors.FIELDSET_OPTION(ListInfoFields.YearOfBirth, LowIncome.yearOfBirth));
-    // await page.waitForTimeout(3000);
-    
-    // await page.hover(SupportSelectors.FIELDSET_SELECT(ListInfoFields.AssessableIncome));
-    // const recentIncome = await page.locator(SupportSelectors.FIELDSET_LISTBOX(ListInfoFields.AssessableIncome));
-    // await recentIncome.selectOption(LowIncome.recentAssessableIncome, { timeout : common.SHORT_WAIT_TIMEOUT });
-
-    await commonActions.selectChoice(ListInfoFields.HousingType, LowIncome.housingType);
-    await commonActions.selectChoice(ListInfoFields.PropertyOwnership, LowIncome.propertyOwnership);
-    await commonActions.selectYesNo(ListInfoFields.MoreThan1Property, LowIncome.ownMoreThanOneProperty);
-    await page.hover(SupportSelectors.ADD_MEMBER);
-    await page.click(SupportSelectors.ADD_MEMBER);
-    await commonActions.selectMemberValue(LowIncome.member, ListInfoFields.YearOfBirth, LowIncome.mem_yearOfBirth);
-    await commonActions.selectMemberValue(LowIncome.member, ListInfoFields.AssessableIncome, LowIncome.mem_recentAssessableIncome);
+    await commonActions.enterFamilyWithLowTotalIncome();
 });
 
 Then ( 'I should see the Estimated Benefits page', async () => {
-    await commonActions.verifyIndividualBenefits(LowIncome.individualBenefits);
+    await commonActions.verifyIndividualBenefits(EstimatedYear.YEAR_2025);
+    await commonActions.verifyIndividualBenefits(EstimatedYear.YEAR_2026);
+    await commonActions.verifyIndividualBenefits(EstimatedYear.YEAR_2027);
 })
 
 

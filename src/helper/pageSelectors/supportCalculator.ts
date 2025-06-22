@@ -14,7 +14,7 @@ export const SupportSelectors = {
     FIELDSET_INPUT: (label:string) => `//label[contains(@class,"Label") and normalize-space()="${label}"]/ancestor::fieldset[contains(@class,"Fieldset")]//div[contains(@class,"react-select__placeholder")]`,
     FIELDSET_LISTBOX : (label : string ) => `//label[contains(@class,"Label") and text()="${label}"]/ancestor::fieldset[contains(@class,"Fieldset")]//div[@role="listbox"]`,
     FIELDSET_OPTION: (label:string, value:string) => `//label[contains(@class,"Label") and normalize-space()="${label}"]/ancestor::fieldset[contains(@class,"Fieldset")]//div[@role="listbox"]//div[@role="option" and text()="${value}"]`,
-    FILEDSET_CHOICE: (label:string, value:string) => `//label[contains(@class,"Label") and normalize-space()="${label}"]/ancestor::fieldset[contains(@class,"Fieldset")]//input[@type="radio" and @value="${value}"]`,
+    FILEDSET_CHOICE: (label:string, value:string) => `//label[contains(@class,"Label") and normalize-space()="${label}"]/ancestor::fieldset[contains(@class,"Fieldset")]//label[contains(@class,"RadioWrapper") and normalize-space()="${value}"]`,
     FILEDSET_DEFAULT: (label:string) => `//label[contains(@class,"Label") and normalize-space()="${label}"]/ancestor::fieldset[contains(@class,"Fieldset")]//div[contains(@class,"react-select__value-container")]//div[1]`,
     FIELDSET_ERROR: (label:string) => `//label[contains(@class,"Label") and normalize-space()="${label}"]/ancestor::fieldset[contains(@class,"Fieldset")]//span[normalize-space()="${common.ERROR.REQUIRED_FIELD}"]`,
 
@@ -24,6 +24,7 @@ export const SupportSelectors = {
     REMOVE_BUTTON: `//div[contains(@class, "ElementSpacedWrapper")]//span[text() = "${commonText.BUTTON_REMOVE}"]/ancestor::button`,
 
     // add household member
-    MEMBER_FIELD_SELECT : (member: string, label:string) => `//span[normalize-space() = "${member}"]/following::label[contains(@id,"member") and text()="${label}"]/following::div[contains(@class,"StyledDropdown")]//input`,
-    MEMBER_FIELD_OPTION : (member: string, label:string, value:string) => `//span[normalize-space() = "${member}"]/following::label[contains(@id,"member") and text()="${label}"]/following::div[contains(@class,"SelectWrapper")]//div[@role="listbox"]//div[@role="option" and text()="${value}"]`
+    MEMBER_FIELD_SELECT : (member: string, label:string) => `//span[normalize-space() = "${member}"]/following::label[contains(@id,"member") and text()="${label}"]/following::div[contains(@class,"StyledDropdown")]`,
+    MEMBER_FIELD_OPTION : (member: string, label:string, value:string) => `//span[normalize-space() = "${member}"]/following::label[contains(@id,"member") and text()="${label}"]/following::div[contains(@class,"SelectWrapper")]//div[@role="listbox"]//div[@role="option" and text()="${value}"]`,
+    MEMBER_FIELD_CHOICE: (member:string, label:string, value:string) => `//span[normalize-space() = "${member}"]/following::legend[text()="${label}"]/ancestor::fieldset[contains(@class,"Fieldset")]//label[contains(@class,"RadioWrapper") and normalize-space()="${value}"]`
 }
